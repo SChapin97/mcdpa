@@ -1,16 +1,17 @@
 #!/bin/sh
 
-TEMPFILE="temp_emails.txt"
-TEMPFILE2="another_temp_emails.txt"
-TEMPFILE3="hosted_emails.txt"
+TEMPFILE="likely_business_emails.txt"
+TEMPFILE2="temp_emails.txt"
+TEMPFILE3="likely_personal_emails.txt"
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ne 2 ]; then
    echo "This script needs to be run with the following syntax:"
-   echo "sh get_emails_from_mbox_takeout.sh <input file>"
+   echo "sh get_emails_from_mbox_takeout.sh <input file> <name for output directory in output/name>"
    exit 1
 fi
 
 input_file="$1"
+directory="$2"
 
 if ! [ -f "$input_file" ] ; then
     echo "Input file not found: $input_file"
@@ -56,4 +57,9 @@ cat "$TEMPFILE" | sort -u > "$TEMPFILE2"
 mv "$TEMPFILE2" "$TEMPFILE"
 
 
+# Move to output directory
+mkdir -p "output"
+mkdir -p "output/$directory"
+mv "$TEMPFILE" "output/$directory/"
+mv "$TEMPFILE3" "output/$directory/"
 
