@@ -18,18 +18,19 @@ if ! [ -s "$sitemap_file" ]; then
     exit 1
 fi
 
-cat "$sitemap_file"  | grep -Ei 'privacy|mcdpa|gdpr|ccpa|vcdpa|cpa|ctdpa|ucpa' > tmp_privacy_links.txt
+privacy_links="tmp_privacy_links.txt"
+cat "$sitemap_file" | tr '<' '\n' | grep 'http' | sed 's/.*http/http/g' | sed 's/>.*//g' | tr -d '"' | tr -d "'" | sort -u | grep -Ei 'privacy|data|gdpr|ccpa|mcdpr' | sed 's/ .*//g' > "$privacy_links"
 
 if ! [ -s "$privacy_links" ]; then
     echo "$website_url" >> no_privacy_links_on_sitemap.txt
 fi
 
+:> curl_log.txt
 while read -r line; do
-    # TODO cleanup xml
     echo "$line"
-    url=$(echo "$line" | sed -E 's|<[^>]+>|\n|g' | grep http)
-    filename=$(echo "$url" | sed 's|.*/||g')
-    curl -kL -m 30 "$url" -o "output/privacy_policy_pages/$website_url/$filename"
-done < tmp_privacy_links.txt
+    echo "$line" >> curl_log.txt
+    filename=$(echo "$line" | sed -E 's|/$||g' | sed 's|.*/||g')
+    curl -kL -m 30 "$line" -o "output/privacy_policy_pages/$website_url/$filename"
+done < "$privacy_links"
 
-rm tmp_privacy_links.txt
+rm "$privacy_links"
