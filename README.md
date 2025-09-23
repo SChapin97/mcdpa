@@ -54,7 +54,8 @@
 1. Use [google takeout](https://takeout.google.com/) to download just google mail data
 2. Run `get_emails_from_mbox_takeout.sh` with the google takeout file in order to generate a list of business and personal email addresses.
 3. Run `valid_domain_finder.sh` with `likely_business_emails.txt` (generated from `get_emails_from_mbox_takeout.sh` in order to generate a list of what the redirect site is. E.g. twitter.com -> x.com
-4. Run `privacy_policy_page_finder.sh` on each domain name in order to find privacy policy pages for the domain.
+4. Run `awk -F ' - ' '{print $1}' <valid_domain_file> | sort -u > all_valid_site.txt`
+5. Run `sitemap_privacy_file_finder.sh` on each domain name in order to find privacy policy pages for the domain.
 
 
 ### TODO:
