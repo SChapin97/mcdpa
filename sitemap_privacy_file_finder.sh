@@ -19,7 +19,7 @@ if ! [ -s "$sitemap_file" ]; then
 fi
 
 privacy_links="tmp_privacy_links.txt"
-cat "$sitemap_file" | tr '<' '\n' | grep 'http' | sed 's/.*http/http/g' | sed 's/>.*//g' | tr -d '"' | tr -d "'" | sort -u | grep -Ei 'privacy|data|gdpr|ccpa|mcdpr' | sed 's/ .*//g' > "$privacy_links"
+tr '<' '\n' "$sitemap_file" | grep 'http' | sed 's/.*http/http/g' | sed 's/>.*//g' | tr -d '"' | tr -d "'" | sort -u | grep -Ei 'privacy|data|gdpr|ccpa|mcdpr' | sed 's/ .*//g' > "$privacy_links"
 
 if ! [ -s "$privacy_links" ]; then
     echo "$website_url" >> no_privacy_links_on_sitemap.txt

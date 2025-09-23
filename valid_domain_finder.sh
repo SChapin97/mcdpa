@@ -38,7 +38,7 @@ while read -r line; do
     if [ "$rc_1" -ne 0 ]; then
         echo "Site does not exist: $current_domain -- return code $rc_1" >> "$OUTPUT_PATH/site_not_found.txt"
     else
-        new_domain_name=$(echo "$site_output" | awk -F '/' '{print $3}' | sed 's/www.//g')
+        new_domain_name=$(echo "$site_output" | awk -F '/' '{print $3}' | sed 's/www.//g' | sed 's/:443//g')
         echo "$new_domain_name - $current_domain" >> "$OUTPUT_PATH/valid_sites.txt"
     fi
 
