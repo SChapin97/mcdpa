@@ -3,7 +3,7 @@ from pathlib import Path
 from datetime import datetime
 from typing import Optional
 
-from src.data_models.company_mcdpa_metadata_model import CompanyPrivacyRecord
+from src.data_models.simple_company_model import CompanyMetadata
 
 
 DB_PATH = Path(__file__).parent / "company_privacy.sqlite"
@@ -44,11 +44,11 @@ def crud_operation(func):
     return wrapper
 
 
-class CompanyPrivacyRepo:
+class SqliteWrapper:
     """High‑level CRUD interface for the single‑table key/value store."""
 
     @crud_operation
-    def create(self, company: str, metadata: CompanyPrivacyRecord) -> None:
+    def create(self, company_name: str, metadata: CompanyMetadata) -> None:
         """Insert a new row. Raises sqlite3.IntegrityError if the key exists."""
         now = datetime.utcnow()
         with _connect() as con:
@@ -59,13 +59,13 @@ class CompanyPrivacyRepo:
                 (company_name, metadata_json, created_at, updated_at)
                 VALUES (?, ?, ?, ?);
                 """,
-                (company, metadata.to_json(), now, now),
+                (company_name, metadata.to_json(), now, now),
             )
             con.commit()
 
     @crud_operation
-    def read(self, company: str) -> Optional[CompanyPrivacyRecord]:
-        """Return the CompanyPrivacyRecord for *company* or None if not found."""
+    def read(self, company_name: str) -> Optional[CompanyMetadata]:
+        """Return the CompanyMetadata for *company_name* or None if not found."""
         with _connect() as con:
             cur = con.cursor()
             cur.execute(
@@ -73,15 +73,15 @@ class CompanyPrivacyRepo:
                 SELECT metadata_json FROM company_privacy
                 WHERE company_name = ?;
                 """,
-                (company,),
+                (company_name,),
             )
             row = cur.fetchone()
             if row:
-                return CompanyPrivacyRecord.from_json(row[0])
+                return CompanyMetadata.from_json(row[0])
             return None
 
     @crud_operation
-    def update(self, company: str, new_metadata: CompanyPrivacyRecord) -> bool:
+    def update(self, company_name: str, new_metadata: CompanyMetadata) -> bool:
         """
         Replace the JSON payload for *company*.
         Returns True if a row was updated, False if the key does not exist.
@@ -95,32 +95,32 @@ class CompanyPrivacyRepo:
                 SET metadata_json = ?, updated_at = ?
                 WHERE company_name = ?;
                 """,
-                (new_metadata.to_json(), now, company),
+                (new_metadata.to_json(), now, company_name),
             )
             con.commit()
             return cur.rowcount > 0
 
     @crud_operation
-    def delete(self, company: str) -> bool:
+    def delete(self, company_name: str) -> bool:
         """Delete the row for *company*. Returns True if something was removed."""
         with _connect() as con:
             cur = con.cursor()
             cur.execute(
                 "DELETE FROM company_privacy WHERE company_name = ?;",
-                (company,),
+                (company_name,),
             )
             con.commit()
             return cur.rowcount > 0
 
     @crud_operation
-    def list_all(self) -> dict[str, CompanyPrivacyRecord]:
-        """Return a dict mapping company → CompanyPrivacyRecord for every row."""
-        result: dict[str, CompanyPrivacyRecord] = {}
+    def list_all(self) -> dict[str, CompanyMetadata]:
+        """Return a dict mapping company_name → CompanyMetadata for every row."""
+        result: dict[str, CompanyMetadata] = {}
         with _connect() as con:
             cur = con.cursor()
             cur.execute(
                 "SELECT company_name, metadata_json FROM company_privacy;"
             )
-            for company, json_blob in cur.fetchall():
-                result[company] = CompanyPrivacyRecord.from_json(json_blob)
+            for company_name, json_blob in cur.fetchall():
+                result[company_name] = CompanyMetadata.from_json(json_blob)
         return result

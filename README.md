@@ -64,3 +64,6 @@
 3. Generate a mega script that runs everything from [[Repro steps]] without having to actually run / modify files
 4. Implement additional logic for data brokers from the [BADBOOL](https://github.com/yaelwrites/Big-Ass-Data-Broker-Opt-Out-List) data broker list here on github.
     - Automation would be nice here, especially for the "high severity" targets.
+5. Submit privacy policy pages to the internet archive and use it for web scraping instead of doing it via curl or selenium.
+    - This should bypass issues with Cloudflare, but I need to test to see if grabbing this information *from* the internet archive is a problem.
+    - This also stores a version of the privacy policy that can be directly linked back to the company for later use if necessary.
