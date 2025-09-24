@@ -6,6 +6,46 @@
 - Currently, this is a collection of scripts to help automate finding and submitting MCDPA / data privacy requests on behalf of the user via Google Takeout .mbox formatted files.
 - The plan is to move these scripts into a single automated script and possibly develop some web scrapers for some of the larger corporations who have a web interface for data privacy requests.
 
+### Version Two Repro steps (very WIP, will have a much more simple solution at a later date):
+1. Use [google takeout](https://takeout.google.com/) to download just google mail data
+2. Follow the steps from [[Version One Repro Steps]] until you generate `all_valid_sites.txt`.
+3. Take the URLs from `all_valid_sites.txt` and find the privacy policy page for each one (instructions at the end of [[Version One Repro Steps]])
+    - Work will be done in the future to find the privacy policy pages either through downloading of the Internet Archive version of the privacy policy page, or via LLM calls.
+      - Probably the former rather than the latter because it's already a pain trying to get single-document-summarization done on my local machine.
+4. Create a JSON-structured file like so and save it in the `input` directory as `privacy_policy_urls.json`:
+    - `{"https://example.com": {"privacy_policy_url": "https://example.com/privacy-policy"}}`
+5. Run `cd src/driver; python main.py` and a SQLite database will be created for each website.
+    - This will also archive the privacy policy page via the [Internet Archive Wayback Machine](https://archive.org/) and save that to the database.
+        - The archived version of the privacy policy page makes it easy to pull down via `requests` so we can run the contents through an LLM to find vital information pertaining to data privacy requests.
+6. In the future, work will be done to automate LLM summarization of these pages, but research needs to be done on this.
+   - Primary research is into what models will work best with Ollama on my local machine (AMD 7800 XT), as I don't have a lot of VRAM to run large and/or accurate models.
+     - I am very much against the idea of calling external LLMs, but this may be an eventuality if this gets released as a tool.
+
+### **(Deprecated)** Version One Repro steps:
+1. Run `git checkout v1-small_bash_scripts`
+2. Use [google takeout](https://takeout.google.com/) to download just google mail data
+3. Run `get_emails_from_mbox_takeout.sh` with the google takeout file in order to generate a list of business and personal email addresses.
+4. Run `valid_domain_finder.sh` with `likely_business_emails.txt` (generated from `get_emails_from_mbox_takeout.sh` in order to generate a list of what the redirect site is. E.g. twitter.com -> x.com
+5. Run `awk -F ' - ' '{print $1}' <valid_domain_file> | sort -u > all_valid_sites.txt`
+6. Run `new_privacy_page_finder.sh <domain homepage url>` on each domain name in order to find privacy policy pages for the domain.
+  - There are a number of different implementations I tried for this. 
+    - All of them have the problem that using `curl` on a lot of pages tends to break the contents of the page because the modern internet is CLI-hostile.
+    - Theoretically you could bypass this by curling the internet archive's Wayback Machine API, but I decided to leave that for version 2.
+  - Version 1 should realistically get you partway there -- you will have a list of homepages for every business that's ever emailed you.
+    - It's up to you at this point to manually find the privacy policy page. 
+      - I did this myself and 85% of the time it's at the bottom of the homepage in the footer. 
+        - The rest of the time you have to either guess the name of the webpage (e.g. `https://example.com/privacy-policy/`) 
+          - If you can't get results form that, try to find it in the sitemap (if it's there, e.g. `https://example.com/sitemap.xml`. if *that's* not there then it may be in robots.txt (`https://example.com/robots.txt`)).
+
+
+### TODO:
+1. Use obsidian or some other data visualization tool to add a file/node so I can map out who has what data and who they give this data to.
+2. Figure out a way to find MCDPA-related instructions on the privacy policy pages.
+3. Generate a mega script that runs everything from [[Repro steps]] without having to actually run / modify files
+4. Implement additional logic for data brokers from the [BADBOOL](https://github.com/yaelwrites/Big-Ass-Data-Broker-Opt-Out-List) data broker list here on github.
+    - Automation would be nice here, especially for the "high severity" targets.
+
+
 
 ## Roadmap and Infrastructure
 - MVP (Version One) is a set of bash scripts that has the end goal of finding a list of either emails and/or a list of links to submit your data privacy request(s) based on a Google Takeout email .mbox file. 
@@ -47,23 +87,3 @@
         - Integrate automation for data privacy requests for at least the biggest offenders from the [BADBOOL](https://github.com/yaelwrites/Big-Ass-Data-Broker-Opt-Out-List) list of data brokers.
             - Probably do some research first on what types of FOSS is out there already, but this is pretty much 80+% of what services like DeleteMe and Incogni do -- automate data privacy deletion requests for these data brokers.
                 - This is something that is interesting to me, is probably out of scope for this but a lot of the lessons from this project/research/journey can be used to implement this sort of thing. Maybe put it in a separate repo if there's a real need for this.
-
-
-
-### Version One Repro steps:
-1. Use [google takeout](https://takeout.google.com/) to download just google mail data
-2. Run `get_emails_from_mbox_takeout.sh` with the google takeout file in order to generate a list of business and personal email addresses.
-3. Run `valid_domain_finder.sh` with `likely_business_emails.txt` (generated from `get_emails_from_mbox_takeout.sh` in order to generate a list of what the redirect site is. E.g. twitter.com -> x.com
-4. Run `awk -F ' - ' '{print $1}' <valid_domain_file> | sort -u > all_valid_site.txt`
-5. Run `sitemap_privacy_file_finder.sh` on each domain name in order to find privacy policy pages for the domain.
-
-
-### TODO:
-1. Use obsidian or some other data visualization tool to add a file/node so I can map out who has what data and who they give this data to.
-2. Figure out a way to find MCDPA-related instructions on the privacy policy pages.
-3. Generate a mega script that runs everything from [[Repro steps]] without having to actually run / modify files
-4. Implement additional logic for data brokers from the [BADBOOL](https://github.com/yaelwrites/Big-Ass-Data-Broker-Opt-Out-List) data broker list here on github.
-    - Automation would be nice here, especially for the "high severity" targets.
-5. Submit privacy policy pages to the internet archive and use it for web scraping instead of doing it via curl or selenium.
-    - This should bypass issues with Cloudflare, but I need to test to see if grabbing this information *from* the internet archive is a problem.
-    - This also stores a version of the privacy policy that can be directly linked back to the company for later use if necessary.
