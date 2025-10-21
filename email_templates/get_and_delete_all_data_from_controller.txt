@@ -2,11 +2,15 @@ To whom it may concern:
 
 I am writing pursuant to my rights under Minnesota statutes section 325M.15, subdivisions 1(b,e-h) to request that:
 - You confirm whether or not you are processing my personal data (b)
+- You provide me the categories of personal data you are processing (b)
+- You provide me a copy of my personal data of which you control in a portable format (and if feasible, in a readily usable format generated via automated means) (e)
 - You process my request to opt out of the processing of my personal data (f) for the purposes of:
   - targeted advertisement
   - sale of personal data
   - profiling "in furtherance of automated decisions that produce legal effects concerning a consumer or similarly significant effects concerning a consumer"[1]
     - This information may, in the future, be used to question, be informed of decision(s), be informed of what actions I might have taken to secure a different decision, and the right to review and correct profiling decisions made in this manner (g)
+- You provide me a list of specific third parties to which you have disclosed my personal data.
+  - If you do not maintain the information in a format specific to a consumer, you must instead provide a list of specific third parties to whom you have disclosed any consumers' personal data.
 - You delete any personal data you have on me (d)
 
 
