@@ -1,6 +1,6 @@
 To whom it may concern:
 
-I am writing pursuant to my rights under Minnesota statutes section 325M.15, subdivisions 1(b,e-h) to request that:
+I am writing pursuant to my rights under Minnesota statutes section 325M.14, subdivisions 1(b,d,f,g) to request that:
 - You confirm whether or not you are processing my personal data (b)
 - You process my request to opt out of the processing of my personal data (f) for the purposes of:
   - targeted advertisement
@@ -25,11 +25,11 @@ Account number or identifier:
 
 ---
 
-As defined in statute 325M, you:
+As defined in statute 325M.14, you:
 - May not require a new account to be created (subd. 4(c))
 - Must respond as soon as feasibly possible, up to 45 days as of receipt of this message (subd. 4(d))
   - There is an appeal process that may extend this up to another 45 days, however you must provide written explanation for this extension and must notify me before the original 45 day limit has been reached. (subd. 5)
-- Must offer this service free of charge up to twice anually per consumer (subd. 4(g))
+- Must offer this service free of charge up to twice annually per consumer (subd. 4(g))
 - Must respond whether or not any action has been taken (subd. 4(f))
 
 

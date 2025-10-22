@@ -1,6 +1,6 @@
 To whom it may concern:
 
-I am writing pursuant to my rights under Minnesota statutes section 325M.15, subdivisions 1(b,e-h) to request that:
+I am writing pursuant to my rights under Minnesota statutes section 325M.14, subdivisions 1(b,e-h) to request that:
 - You confirm whether or not you are processing my personal data (b)
 - You provide me the categories of personal data you are processing (b)
 - You provide me a copy of my personal data of which you control in a portable format (and if feasible, in a readily usable format generated via automated means) (e)
@@ -9,8 +9,8 @@ I am writing pursuant to my rights under Minnesota statutes section 325M.15, sub
   - sale of personal data
   - profiling "in furtherance of automated decisions that produce legal effects concerning a consumer or similarly significant effects concerning a consumer"[1]
     - This information may, in the future, be used to question, be informed of decision(s), be informed of what actions I might have taken to secure a different decision, and the right to review and correct profiling decisions made in this manner (g)
-- You provide me a list of specific third parties to which you have disclosed my personal data.
-  - If you do not maintain the information in a format specific to a consumer, you must instead provide a list of specific third parties to whom you have disclosed any consumers' personal data.
+- You provide me a list of specific third parties to which you have disclosed my personal data (h)
+  - If you do not maintain the information in a format specific to a consumer, you must instead provide a list of specific third parties to whom you have disclosed any consumers' personal data
 - You delete any personal data you have on me (d)
 
 
@@ -29,11 +29,11 @@ Account number or identifier:
 
 ---
 
-As defined in statute 325M, you:
+As defined in statute 325M.14, you:
 - May not require a new account to be created (subd. 4(c))
 - Must respond as soon as feasibly possible, up to 45 days as of receipt of this message (subd. 4(d))
   - There is an appeal process that may extend this up to another 45 days, however you must provide written explanation for this extension and must notify me before the original 45 day limit has been reached. (subd. 5)
-- Must offer this service free of charge up to twice anually per consumer (subd. 4(g))
+- Must offer this service free of charge up to twice annually per consumer (subd. 4(g))
 - Must respond whether or not any action has been taken (subd. 4(f))
 
 
